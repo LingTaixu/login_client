@@ -1,24 +1,4 @@
-# login_client
-
-## Project setup
-```
+1. yarn 安装错误解决方案
+npm install -g mirror-config-china --registry=http://registry.npm.taobao.org
+npm install node-sass
 yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
