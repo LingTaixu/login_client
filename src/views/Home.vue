@@ -5,11 +5,11 @@
     </div>
 
     <div class="main">
-      <Content />
+      <Content :reg='reg' @closeReg="closeReg" @login='login'/>
     </div>
 
     <div class="main-footer">
-      <Footer />
+      <Footer @register='register' :loginStatus='loginStatus' />
     </div>
   </div>
 </template>
@@ -25,6 +25,23 @@ export default {
     Footer,
     Content,
   },
+  methods: {
+    register(data) {
+      this.reg = data;
+    },
+    closeReg(data) {
+      this.reg = data;
+    },
+    login(data) {
+      this.loginStatus = data;
+    },
+  },
+  data() {
+    return {
+      reg: 'login',
+      loginStatus: 'No',
+    };
+  },
 };
 </script>
 
@@ -35,14 +52,13 @@ export default {
   flex-direction: column;
 }
 .main-header {
-  flex: 0.1;
+  flex: 0.03;
 }
-
 .main {
   flex: 1;
 }
-
 .main-footer {
-  flex: 0.1;
+  flex: 0.2;
 }
+
 </style>

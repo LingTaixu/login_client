@@ -1,7 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { app, protocol, BrowserWindow } from 'electron';
+
+import {
+  app, protocol, BrowserWindow, ipcMain,
+} from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+
+let win;
+const { exec } = require('child_process');
+// 执行cmd命令
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -12,17 +19,17 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
-    width: 900,
-    height: 500,
+  win = new BrowserWindow({
+    width: 920,
+    height: 545,
     frame: false,
     resizable: false,
     webPreferences: {
-
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -55,6 +62,7 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+  console.log(ipcMain);
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
@@ -65,7 +73,6 @@ app.on('ready', async () => {
   }
   createWindow();
 });
-
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
@@ -80,3 +87,20 @@ if (isDevelopment) {
     });
   }
 }
+
+const cmdStr = 'BlackDesert64.exe';
+const cmdPath = 'D:\\HssCorsair\\bin64\\';
+// 启动游戏
+ipcMain.on('start', (token) => {
+  exec(`${cmdStr} ${token}`, { cwd: cmdPath });
+});
+
+// 最小化
+ipcMain.on('window-min', () => {
+  win.minimize();
+});
+
+// 关闭
+ipcMain.on('guanBi', () => {
+  app.exit();
+});
